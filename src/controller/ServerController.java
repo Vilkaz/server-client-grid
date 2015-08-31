@@ -15,22 +15,25 @@ import java.net.ServerSocket;
 public class ServerController {
     private static ServerSocket serverSocket;
 
-    public static void toogleServer(ServerConfigDTO configDTO) {
+    public static Boolean toogleServer(ServerConfigDTO configDTO) {
         if (isSocketAlive()) {
             System.out.println("serverSocket lebt bereits");
+           return checkRunningSocket(configDTO);
         } else {
-            firstInitialisation(configDTO);
+           return  firstInitialisation(configDTO);
         }
     }
+
+
 
 
     private static Boolean isSocketAlive() {
         return ServerController.serverSocket != null && !ServerController.serverSocket.isClosed();
     }
 
-    private static void checkRunningSocket(ServerConfigDTO configDTO) {
+    private static Boolean checkRunningSocket(ServerConfigDTO configDTO) {
         if (ServerController.serverSocket.getLocalPort() == configDTO.getPort() &&
-                ServerController.serverSocket.getInetAddress().getHostName() == configDTO.getHostname()) {
+                ServerController.serverSocket.getInetAddress().getHostName().equals(configDTO.getHostname())) {
             try {
                 ServerController.serverSocket.close();
                 System.out.println("serverSocket is dead");
@@ -38,17 +41,19 @@ public class ServerController {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
-    private static void firstInitialisation(ServerConfigDTO configDTO) {
+    private static Boolean firstInitialisation(ServerConfigDTO configDTO) {
         try {
-            InetAddress hostname = new InetAddress(configDTO.getHostname());
+            InetAddress hostname = InetAddress.getByName(configDTO.getHostname());
             ServerController.serverSocket = new ServerSocket(configDTO.getPort(),15,hostname);
-            System.out.println("serverSocket lives");
+            System.out.println("serverSocket lives with those data="+serverSocket);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     public void listenSocket() {
