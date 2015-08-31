@@ -1,8 +1,8 @@
-package model;
+package dto;
 
 /**
  * User: Vilius Kukanauskas
- * Package: model
+ * Package: dto
  * Date: 26.08.2015
  * Time: 2:48 PM
  */
