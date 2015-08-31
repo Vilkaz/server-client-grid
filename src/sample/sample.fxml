@@ -1,0 +1,16 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<GridPane fx:id="mainPAne" fx:controller="sample.Controller"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <Label text="bitte die Server IP eingeben"
+        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField text="127.0.0.1"
+         GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Button text="Server Starten"  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+
+</GridPane>
