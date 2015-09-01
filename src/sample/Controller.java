@@ -7,7 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.net.Socket;
+
 public class Controller {
+
+    private Socket socket;
 
     @FXML
     private TextField serverIP_tf, port_tf;
@@ -16,12 +21,12 @@ public class Controller {
     private Text serverStatus;
 
     @FXML
-    private Button toogleServer_btn,connectWithServer_btn;
+    private Button toogleServer_btn, connectWithServer_btn;
 
     @FXML
     protected void toogleServer() {
-      if (ServerController.toogleServer(getServerConfig())){
-          enableConectionToServer();
+        if (ServerController.toogleServer(getServerConfig())) {
+            enableConectionToServer();
           disableServerEdit(true);
           setToogleServerButton("Server stoppen");
       } else {
@@ -31,8 +36,24 @@ public class Controller {
       }
     }
 
+    @FXML
+    private void connectWithServer(){
+        createCocket();
+        System.out.println("socket steht");
+    }
+
+
+    private void createCocket(){
+        ServerConfigDTO serverConfig = getServerConfig();
+        try {
+            this.socket =  new Socket(serverConfig.getHostname(), serverConfig.getPort());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private  void disableConnectionToServer(){
-        setServerstatus("ON");
+        setServerstatus("OFF");
         disableConnectionButton(true);
     }
 
