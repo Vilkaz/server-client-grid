@@ -17,8 +17,7 @@ public class ServerController {
 
     public static Boolean toogleServer(ServerConfigDTO configDTO) {
         if (isSocketAlive()) {
-            System.out.println("serverSocket lebt bereits");
-           return checkRunningSocket(configDTO);
+           return closeSocket();
         } else {
            return  firstInitialisation(configDTO);
         }
@@ -31,16 +30,13 @@ public class ServerController {
         return ServerController.serverSocket != null && !ServerController.serverSocket.isClosed();
     }
 
-    private static Boolean checkRunningSocket(ServerConfigDTO configDTO) {
-        if (ServerController.serverSocket.getLocalPort() == configDTO.getPort() &&
-                ServerController.serverSocket.getInetAddress().getHostName().equals(configDTO.getHostname())) {
+    private static Boolean closeSocket() {
             try {
                 ServerController.serverSocket.close();
-                System.out.println("serverSocket is dead");
+                System.out.println("serverSocket with details "+ServerController.serverSocket+" is dead");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
         return false;
     }
 
