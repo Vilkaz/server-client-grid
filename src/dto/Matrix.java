@@ -7,6 +7,6 @@ package dto;
  * Time: 2:48 PM
  */
 public class Matrix {
-    private int[][] value = new int[5][5];
+    private Boolean[][] value = new Boolean[5][5];
 
 }
