@@ -2,9 +2,7 @@ package controller;
 
 import dto.ConfigDTO;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -16,13 +14,17 @@ import java.net.Socket;
 public class ClientController {
     private static Socket socket;
 
-    public static void makeSocket(ConfigDTO config) {
+    public static void makeSocket(ConfigDTO config, int matrixID) {
         initSocket(config);
         try {
             OutputStream OS = socket.getOutputStream();
             PrintStream PS = new PrintStream(OS);
-            PS.println("klopf klopf");
+            PS.println(matrixID);
+            InputStreamReader IR = new InputStreamReader(socket.getInputStream());
+            BufferedReader BR = new BufferedReader(IR);
             ServerController.initialiseServerListener();
+            System.out.println("server sagt "+BR.readLine());
+            //System.out.println(msgFromServer);
         } catch (IOException e) {
             e.printStackTrace();
         }

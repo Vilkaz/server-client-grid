@@ -5,34 +5,46 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="538.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <children>
-      <TextField fx:id="serverIP_tf" layoutX="85.0" layoutY="14.0" prefHeight="25.0" prefWidth="122.0" text="127.0.0.1" />
-       <Text layoutX="20.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server IP" />
-       <Text layoutX="330.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
-       <Text fx:id="serverStatus" layoutX="384.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF" />
-       <TextField fx:id="port_tf" layoutX="267.0" layoutY="14.0" prefHeight="25.0" prefWidth="58.0" text="9989" />
-       <Text layoutX="221.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port" wrappingWidth="45.8046875" />
-       <Button fx:id="toogleServer_btn" layoutX="419.0" layoutY="14.0" mnemonicParsing="false" onAction="#toogleServer" text="Starte Server" />
-       <Separator layoutX="3.0" layoutY="39.0" prefHeight="25.0" prefWidth="527.0" />
-       <RadioButton fx:id="matrix1"  id="1" onAction="#getMatrix"  disable="true" layoutX="32.0" layoutY="110.0" mnemonicParsing="false" text="Matrix1"  toggleGroup="$matrixGroup">
-           <toggleGroup>
-               <ToggleGroup fx:id="matrixGroup" />
-           </toggleGroup></RadioButton>
-       <RadioButton fx:id="matrix2" disable="true" layoutX="32.0" layoutY="137.0" mnemonicParsing="false" text="Matrix2" toggleGroup="$matrixGroup" />
-       <RadioButton fx:id="matrix3" disable="true" layoutX="32.0" layoutY="168.0" mnemonicParsing="false" text="Matrix3" toggleGroup="$matrixGroup" />
-       <RadioButton fx:id="matrix4" disable="true" layoutX="32.0" layoutY="200.0" mnemonicParsing="false" text="Matrix4" toggleGroup="$matrixGroup" />
-       <RadioButton fx:id="matrix5" disable="true" layoutX="32.0" layoutY="228.0" mnemonicParsing="false" text="Matrix5" toggleGroup="$matrixGroup" />
-      <TableView fx:id="tableView" disable="true" layoutX="132.0" layoutY="110.0" prefHeight="282.0" prefWidth="367.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="1" />
-          <TableColumn prefWidth="75.0" text="2" />
-          <TableColumn prefWidth="75.0" text="3" />
-          <TableColumn prefWidth="75.0" text="4" />
-          <TableColumn prefWidth="75.0" text="5" />
-        </columns>
-      </TableView>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0"
+      prefWidth="538.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="sample.Controller">
+    <children>
+        <TextField fx:id="serverIP_tf" layoutX="85.0" layoutY="14.0" prefHeight="25.0" prefWidth="122.0"
+                   text="127.0.0.1"/>
+        <Text layoutX="20.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server IP"/>
+        <Text layoutX="330.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:"/>
+        <Text fx:id="serverStatus" layoutX="384.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OFF"/>
+        <TextField fx:id="port_tf" layoutX="267.0" layoutY="14.0" prefHeight="25.0" prefWidth="58.0" text="9989"/>
+        <Text layoutX="221.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port"
+              wrappingWidth="45.8046875"/>
+        <Button fx:id="toogleServer_btn" layoutX="419.0" layoutY="14.0" mnemonicParsing="false" onAction="#toogleServer"
+                text="Starte Server"/>
+        <Separator layoutX="3.0" layoutY="39.0" prefHeight="25.0" prefWidth="527.0"/>
+        <RadioButton fx:id="matrix1" id="1" onAction="#getMatrix" disable="true" layoutX="32.0" layoutY="110.0"
+                     mnemonicParsing="false" text="Matrix1" toggleGroup="$matrixGroup">
+            <toggleGroup>
+                <ToggleGroup fx:id="matrixGroup"/>
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="matrix2" id="2" onAction="#getMatrix" disable="true" layoutX="32.0" layoutY="137.0"
+                     mnemonicParsing="false" text="Matrix2" toggleGroup="$matrixGroup"/>
+        <RadioButton fx:id="matrix3" id="3" onAction="#getMatrix" disable="true" layoutX="32.0" layoutY="168.0"
+                     mnemonicParsing="false" text="Matrix3" toggleGroup="$matrixGroup"/>
+        <RadioButton fx:id="matrix4" id="4" onAction="#getMatrix" disable="true" layoutX="32.0" layoutY="200.0"
+                     mnemonicParsing="false" text="Matrix4" toggleGroup="$matrixGroup"/>
+        <RadioButton fx:id="matrix5" id="5" onAction="#getMatrix" disable="true" layoutX="32.0" layoutY="228.0"
+                     mnemonicParsing="false" text="Matrix5" toggleGroup="$matrixGroup"/>
+        <TableView fx:id="tableView"   disable="true" layoutX="132.0" layoutY="110.0"
+                   prefHeight="282.0" prefWidth="367.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="1"/>
+                <TableColumn prefWidth="75.0" text="2"/>
+                <TableColumn prefWidth="75.0" text="3"/>
+                <TableColumn prefWidth="75.0" text="4"/>
+                <TableColumn prefWidth="75.0" text="5"/>
+            </columns>
+        </TableView>
 
 
-   </children>
+    </children>
 </Pane>

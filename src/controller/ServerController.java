@@ -1,11 +1,9 @@
 package controller;
 
 import dto.ConfigDTO;
+import dto.Matrix;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -20,8 +18,7 @@ public class ServerController {
     public static Boolean toogleServer(ConfigDTO configDTO) {
         if (isSocketAlive()) {
             return closeSocket();
-        }
-        else {
+        } else {
             return startServer(configDTO);
         }
     }
@@ -36,13 +33,13 @@ public class ServerController {
      * Return wert beschreibt den server zustand. false = offline, true = online
      */
     private static Boolean closeSocket() {
-            try {
-                ServerController.serverSocket.close();
-                System.out.println("serverSocket with details " + ServerController.serverSocket + " is dead");
-                return false;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            ServerController.serverSocket.close();
+            System.out.println("serverSocket with details " + ServerController.serverSocket + " is dead");
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -62,12 +59,10 @@ public class ServerController {
             Socket listener = serverSocket.accept();
             InputStreamReader IR = new InputStreamReader(listener.getInputStream());
             BufferedReader BR = new BufferedReader(IR);
-            while (true)
-            {
-                String id = BR.readLine();
-                PrintStream PS = new PrintStream(listener.getOutputStream());
-                PS.println("iwas kommt an "+id);
-            }
+            String id = BR.readLine();
+            System.out.println(id);
+            PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
+            printwriter.println(new Matrix());
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {

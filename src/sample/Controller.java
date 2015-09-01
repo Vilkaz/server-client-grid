@@ -66,17 +66,13 @@ public class Controller {
 
     @FXML
     private void getMatrix(){
-//        Toggle test = matrixGroup.getSelectedToggle();
-//        System.out.println(test.getUserData().toString());
-        System.out.println("hole matrix nr"+matrixGroup.getSelectedToggle());
+        RadioButton chk = (RadioButton) matrixGroup.getSelectedToggle();
+         System.out.println("hole matrix nr:"+chk.getId());
+        int matrixID = Integer.parseInt(chk.getId());
+        ClientController.makeSocket(getServerConfig(),matrixID );
     }
 
-    private void createCocket() {
-        ConfigDTO config = getServerConfig();
-        ClientController.makeSocket(config);
-    }
-
-    private void disableServerEdit(Boolean status) {
+      private void disableServerEdit(Boolean status) {
         serverIP_tf.setDisable(status);
         port_tf.setDisable(status);
     }
