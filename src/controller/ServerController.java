@@ -2,7 +2,9 @@ package controller;
 
 import dto.ConfigDTO;
 import dto.MatrixDTO;
+import jdk.nashorn.internal.parser.JSONParser;
 
+import javax.xml.transform.Source;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -59,13 +61,20 @@ public class ServerController {
 
 
     private static void initMatrixArray(){
-        ArrayList<List<Integer>> list1 = new ArrayList<List<Integer>>();
-        list1.add(Arrays.asList(1, 2, 3, 4));
-        list1.add(Arrays.asList(1, 2));
-        ArrayList<List<Integer>> list2 = new ArrayList<List<Integer>>();
-        matrix[0]= MatrixDTOController.getMatrixByList(list1);
+
+    }
+
+    private static void getObjectFromJson(){
 
 
+    }
+
+    public static <T> List<T> asList(T ... items) {
+        List<T> list = new ArrayList<T>();
+        for (T item : items) {
+            list.add(item);
+        }
+        return list;
     }
 
     public static void initialiseServerListener() {
