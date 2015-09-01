@@ -1,10 +1,12 @@
 package controller;
 
-import dto.ServerConfigDTO;
+import dto.ConfigDTO;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.*;
 
 /**
  * User: Vilius Kukanauskas
@@ -15,56 +17,77 @@ import java.net.ServerSocket;
 public class ServerController {
     private static ServerSocket serverSocket;
 
-    public static Boolean toogleServer(ServerConfigDTO configDTO) {
+    public static Boolean toogleServer(ConfigDTO configDTO) {
         if (isSocketAlive()) {
-           return closeSocket();
-        } else {
-           return  firstInitialisation(configDTO);
+            return closeSocket();
+        }
+        else {
+            return startServer(configDTO);
         }
     }
-
-
 
 
     private static Boolean isSocketAlive() {
         return ServerController.serverSocket != null && !ServerController.serverSocket.isClosed();
     }
 
+
+    /**
+     * Return wert beschreibt den server zustand. false = offline, true = online
+     */
     private static Boolean closeSocket() {
             try {
                 ServerController.serverSocket.close();
-                System.out.println("serverSocket with details "+ServerController.serverSocket+" is dead");
+                System.out.println("serverSocket with details " + ServerController.serverSocket + " is dead");
+                return false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        return false;
-    }
-
-    private static Boolean firstInitialisation(ServerConfigDTO configDTO) {
-        try {
-            InetAddress hostname = InetAddress.getByName(configDTO.getHostname());
-            ServerController.serverSocket = new ServerSocket(configDTO.getPort(),15,hostname);
-            System.out.println("serverSocket lives with those data="+serverSocket);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return true;
     }
 
-    public void listenSocket() {
+
+    /**
+     * Return wert beschreibt den server zustand. false = offline, true = online
+     */
+    private static Boolean startServer(ConfigDTO configDTO) {
+        ServerController.initialiseServerSocket(configDTO);
+        System.out.println("serverSocket lives with those data=" + serverSocket);
+        return true;
+    }
+
+
+    public static void initialiseServerListener() {
         try {
-            ServerSocket server = new ServerSocket(9980);
+            Socket listener = serverSocket.accept();
+            InputStreamReader IR = new InputStreamReader(listener.getInputStream());
+            BufferedReader BR = new BufferedReader(IR);
+            while (true)
+            {
+                String id = BR.readLine();
+                PrintStream PS = new PrintStream(listener.getOutputStream());
+                PS.println("iwas kommt an "+id);
+            }
+        } catch (SocketTimeoutException s) {
+            System.out.println("Socket timed out!");
         } catch (IOException e) {
-            System.out.println("Could not listen on port 9980");
-            System.exit(-1);
+            e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        ServerController t = new ServerController();
-        t.listenSocket();
+    private static void initialiseServerSocket(ConfigDTO config) {
+        try {
+            InetAddress hostname = InetAddress.getByName(config.getHostname());
+            try {
+                serverSocket = new ServerSocket(config.getPort(), 15, hostname);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
+
 }
 
 
