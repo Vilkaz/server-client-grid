@@ -1,10 +1,13 @@
 package controller;
 
 import dto.ConfigDTO;
-import dto.Matrix;
+import dto.MatrixDTO;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * User: Vilius Kukanauskas
@@ -14,6 +17,7 @@ import java.net.*;
  */
 public class ServerController {
     private static ServerSocket serverSocket;
+    private static MatrixDTO[] matrix = new MatrixDTO[5];
 
     public static Boolean toogleServer(ConfigDTO configDTO) {
         if (isSocketAlive()) {
@@ -54,6 +58,16 @@ public class ServerController {
     }
 
 
+    private static void initMatrixArray(){
+        ArrayList<List<Integer>> list1 = new ArrayList<List<Integer>>();
+        list1.add(Arrays.asList(1, 2, 3, 4));
+        list1.add(Arrays.asList(1, 2));
+        ArrayList<List<Integer>> list2 = new ArrayList<List<Integer>>();
+        matrix[0]= MatrixDTOController.getMatrixByList(list1);
+
+
+    }
+
     public static void initialiseServerListener() {
         try {
             Socket listener = serverSocket.accept();
@@ -62,7 +76,7 @@ public class ServerController {
             String id = BR.readLine();
             System.out.println(id);
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.println(new Matrix());
+            printwriter.println(new MatrixDTO());
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {
