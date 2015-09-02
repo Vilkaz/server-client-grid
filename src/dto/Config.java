@@ -3,11 +3,11 @@ package dto;
 /**
  * Created by Vilkaz on 31.08.2015.
  */
-public class ConfigDTO {
+public class Config {
     private String hostname;
     private int port;
 
-   public ConfigDTO(String hostname, int port){
+   public Config(String hostname, int port){
         this.hostname=hostname;
         this.port=port;
     }

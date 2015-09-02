@@ -1,14 +1,15 @@
 package controller;
 
-import dto.ConfigDTO;
-import dto.MatrixDTO;
-import jdk.nashorn.internal.parser.JSONParser;
+import dto.Config;
+import dto.Matrix;
+import dto.Row;
 
-import javax.xml.transform.Source;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,13 +20,14 @@ import java.util.List;
  */
 public class ServerController {
     private static ServerSocket serverSocket;
-    private static MatrixDTO[] matrix = new MatrixDTO[5];
+    private static Matrix[] matrix = new Matrix[5];
 
-    public static Boolean toogleServer(ConfigDTO configDTO) {
+    public static Boolean toogleServer(Config config) {
         if (isSocketAlive()) {
             return closeSocket();
-        } else {
-            return startServer(configDTO);
+        }
+        else {
+            return startServer(config);
         }
     }
 
@@ -53,21 +55,21 @@ public class ServerController {
     /**
      * Return wert beschreibt den server zustand. false = offline, true = online
      */
-    private static Boolean startServer(ConfigDTO configDTO) {
-        ServerController.initialiseServerSocket(configDTO);
+    private static Boolean startServer(Config config) {
+        ServerController.initialiseServerSocket(config);
         System.out.println("serverSocket lives with those data=" + serverSocket);
         return true;
     }
 
 
-    private static void initMatrixArray(){
-
+    private static int binaryCoding(List<Integer> list){
+        int result = 0;
+        for (int index :list ){
+            result+=  Math.pow(index,2);
+        }
+        return result;
     }
 
-    private static void getObjectFromJson(){
-
-
-    }
 
     public static <T> List<T> asList(T ... items) {
         List<T> list = new ArrayList<T>();
@@ -82,10 +84,12 @@ public class ServerController {
             Socket listener = serverSocket.accept();
             InputStreamReader IR = new InputStreamReader(listener.getInputStream());
             BufferedReader BR = new BufferedReader(IR);
-            String id = BR.readLine();
-            System.out.println(id);
+            String stream = BR.readLine();
+            int matrixID = Integer.parseInt(stream);
+            System.out.println("hole matrix mit der ID nr "+matrixID);
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.println(new MatrixDTO());
+            printwriter.print("asd");
+            printwriter.close();
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {
@@ -93,7 +97,7 @@ public class ServerController {
         }
     }
 
-    private static void initialiseServerSocket(ConfigDTO config) {
+    private static void initialiseServerSocket(Config config) {
         try {
             InetAddress hostname = InetAddress.getByName(config.getHostname());
             try {

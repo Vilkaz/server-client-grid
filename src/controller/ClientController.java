@@ -1,6 +1,6 @@
 package controller;
 
-import dto.ConfigDTO;
+import dto.Config;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,7 +14,7 @@ import java.net.Socket;
 public class ClientController {
     private static Socket socket;
 
-    public static void makeSocket(ConfigDTO config, int matrixID) {
+    public static void makeSocket(Config config, int matrixID) throws ClassNotFoundException {
         initSocket(config);
         try {
             OutputStream OS = socket.getOutputStream();
@@ -23,7 +23,9 @@ public class ClientController {
             InputStreamReader IR = new InputStreamReader(socket.getInputStream());
             BufferedReader BR = new BufferedReader(IR);
             ServerController.initialiseServerListener();
+            //ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             System.out.println("server sagt "+BR.readLine());
+            //Object igotthis = objectInputStream.readObject();
             //System.out.println(msgFromServer);
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,7 +33,7 @@ public class ClientController {
 
     }
 
-    private static void initSocket(ConfigDTO config) {
+    private static void initSocket(Config config) {
         try {
             socket = new Socket(config.getHostname(), config.getPort());
         } catch (IOException e) {
