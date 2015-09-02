@@ -88,7 +88,7 @@ public class ServerController {
             int matrixID = Integer.parseInt(stream);
             System.out.println("hole matrix mit der ID nr "+matrixID);
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.print("asd");
+            printwriter.print(asList(23,51,75,234));
             printwriter.close();
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
