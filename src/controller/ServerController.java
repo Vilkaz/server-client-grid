@@ -2,14 +2,22 @@ package controller;
 
 import dto.ConfigDTO;
 import dto.MatrixDTO;
-import jdk.nashorn.internal.parser.JSONParser;
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.json.simple.JSONArray;
 
-import javax.xml.transform.Source;
+import java.util.Arrays;
 import java.io.*;
 import java.net.*;
+import java.security.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * User: Vilius Kukanauskas
@@ -60,22 +68,44 @@ public class ServerController {
     }
 
 
-    private static void initMatrixArray(){
+    private static void initMatrixArray() {
 
     }
 
-    private static void getObjectFromJson(){
+    private static MatrixDTO getMatrixFromJsonByID(int id) {
+        JSONParser parser = new JSONParser();
+        MatrixDTO result = new MatrixDTO();
+        try {
+
+            Gson gson = new Gson();
+            BufferedReader br = new BufferedReader(
+                    new FileReader("src/dto/matrix.json"));
 
 
-    }
 
-    public static <T> List<T> asList(T ... items) {
-        List<T> list = new ArrayList<T>();
-        for (T item : items) {
-            list.add(item);
+            JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("src/dto/matrix.json"));
+            result = getMatrixFromJsonObject((JSONObject) jsonArray.get(id));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        return list;
+
+        return result;
+
     }
+
+
+    protected static MatrixDTO getMatrixFromJsonObject(JSONObject jsonObject) {
+        MatrixDTO result = new MatrixDTO();
+        Object test = jsonObject.get(0);
+        return result;
+
+
+    }
+
 
     public static void initialiseServerListener() {
         try {
@@ -84,6 +114,7 @@ public class ServerController {
             BufferedReader BR = new BufferedReader(IR);
             String id = BR.readLine();
             System.out.println(id);
+            getMatrixFromJsonByID(Integer.parseInt(id));
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
             printwriter.println(new MatrixDTO());
         } catch (SocketTimeoutException s) {

@@ -6,6 +6,7 @@ package dto;
 public class ConfigDTO {
     private String hostname;
     private int port;
+    HachMap
 
    public ConfigDTO(String hostname, int port){
         this.hostname=hostname;
