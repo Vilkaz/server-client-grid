@@ -2,13 +2,10 @@ package sample;
 
 import controller.ClientController;
 import controller.ServerController;
-import dto.ConfigDTO;
+import dto.Config;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
-import java.net.Socket;
 
 public class Controller {
 
@@ -65,7 +62,7 @@ public class Controller {
     }
 
     @FXML
-    private void getMatrix(){
+    private void getMatrix() throws ClassNotFoundException {
         RadioButton chk = (RadioButton) matrixGroup.getSelectedToggle();
          System.out.println("hole matrix nr:"+chk.getId());
         int matrixID = Integer.parseInt(chk.getId());
@@ -89,8 +86,8 @@ public class Controller {
     }
 
 
-    private ConfigDTO getServerConfig() {
-        return new ConfigDTO(
+    private Config getServerConfig() {
+        return new Config(
                 serverIP_tf.getText(),
                 Integer.parseInt(port_tf.getText()));
     }
