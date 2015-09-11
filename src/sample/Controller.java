@@ -6,6 +6,7 @@ import dto.Config;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import org.json.simple.parser.ParseException;
 
 public class Controller {
 
@@ -62,7 +63,7 @@ public class Controller {
     }
 
     @FXML
-    private void getMatrix() throws ClassNotFoundException {
+    private void getMatrix() throws ClassNotFoundException, ParseException {
         RadioButton chk = (RadioButton) matrixGroup.getSelectedToggle();
          System.out.println("hole matrix nr:"+chk.getId());
         int matrixID = Integer.parseInt(chk.getId());

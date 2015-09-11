@@ -10,6 +10,13 @@ import java.util.HashMap;
  * Time: 2:48 PM
  */
 public class Matrix {
-    public HashMap<Integer, ArrayList<Integer>> value;
+    private HashMap<Integer, ArrayList<Integer>> value;
 
+    public HashMap<Integer, ArrayList<Integer>> getValue() {
+        return value;
+    }
+
+    public void setValue(HashMap<Integer, ArrayList<Integer>> value) {
+        this.value = value;
+    }
 }

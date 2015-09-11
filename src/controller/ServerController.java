@@ -67,45 +67,17 @@ public class ServerController {
 
 
     private static Matrix getMatrixFromJsonByID(int id) {
-        JSONParser parser = new JSONParser();
         Matrix result = new Matrix();
+        JSONParser parser = new JSONParser();
+        Gson gson = new Gson();
         try {
-
-            Gson gson = new Gson();
-            BufferedReader br = new BufferedReader(
-                    new FileReader("src/data/matrix1.json"));
-
-            System.out.println(br.read());
-
-            Type matrixValue = new TypeToken<Map<Integer, ArrayList<Integer>>>(){}.getType();
-            Map<Integer, ArrayList<Integer>> map2 = gson.fromJson(br.toString(),  matrixValue);
-            Matrix matrix1 = new Matrix();
-
-
-//            HashMap<Integer, ArrayList<Integer>> map = new HashMap();
-//            map.put(1, new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4)));
-//            map.put(2, new ArrayList<Integer>(Arrays.asList(1, 2)));
-//            Matrix matrix1 = new Matrix();
-//            matrix1.value = map;
-//
-//            String json = gson.toJson(matrix1);
-//
-//            try {
-//                //write converted json data to a file named "CountryGSON.json"
-//                FileWriter writer = new FileWriter("src/dto/matrix2.json");
-//                writer.write(json);
-//                writer.close();
-//
-//            }catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
-
-//            JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("src/dto/matrix.json"));
-//            result = getMatrixFromJsonObject((JSONObject) jsonArray.get(id));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Object obj = parser.parse(new FileReader("src/data/matrix"+id+".json"));
+            JSONObject jsonObject =  (JSONObject) obj;
+            Map val = (Map) jsonObject.get("value");
+            result.setValue((HashMap) val);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return result;
@@ -129,9 +101,11 @@ public class ServerController {
             BufferedReader BR = new BufferedReader(IR);
             String id = BR.readLine();
             System.out.println(id);
-            getMatrixFromJsonByID(Integer.parseInt(id));
-            PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.println(new Matrix());
+            Matrix answer =  getMatrixFromJsonByID(Integer.parseInt(id));
+            ObjectOutputStream outToClient = new ObjectOutputStream(listener.getOutputStream());
+            outToClient.writeObject(answer);
+            //PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
+            //printwriter.println(answer);
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {

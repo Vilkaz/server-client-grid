@@ -1,6 +1,8 @@
 package controller;
 
 import dto.Config;
+import dto.Matrix;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,17 +16,19 @@ import java.net.Socket;
 public class ClientController {
     private static Socket socket;
 
-    public static void makeSocket(Config config, int matrixID) throws ClassNotFoundException {
+    public static void makeSocket(Config config, int matrixID) throws ClassNotFoundException, ParseException {
         initSocket(config);
         try {
             OutputStream OS = socket.getOutputStream();
             PrintStream PS = new PrintStream(OS);
             PS.println(matrixID);
-            InputStreamReader IR = new InputStreamReader(socket.getInputStream());
-            BufferedReader BR = new BufferedReader(IR);
+            //InputStreamReader IR = new InputStreamReader(socket.getInputStream());
+            //BufferedReader BR = new BufferedReader(IR);
             ServerController.initialiseServerListener();
+            ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
+            Matrix matrix = (Matrix)inFromServer.readObject();
             //ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            System.out.println("server sagt "+BR.readLine());
+            //System.out.println("server sagt "+BR.readLine());
             //Object igotthis = objectInputStream.readObject();
             //System.out.println(msgFromServer);
         } catch (IOException e) {
