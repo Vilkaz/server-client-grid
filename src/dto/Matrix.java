@@ -1,5 +1,6 @@
 package dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +12,8 @@ import java.util.HashMap;
  */
 public class Matrix {
     private HashMap<Integer, ArrayList<Integer>> value;
+
+
 
     public HashMap<Integer, ArrayList<Integer>> getValue() {
         return value;

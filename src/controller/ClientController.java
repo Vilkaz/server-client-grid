@@ -22,15 +22,10 @@ public class ClientController {
             OutputStream OS = socket.getOutputStream();
             PrintStream PS = new PrintStream(OS);
             PS.println(matrixID);
-            //InputStreamReader IR = new InputStreamReader(socket.getInputStream());
-            //BufferedReader BR = new BufferedReader(IR);
+            InputStreamReader IR = new InputStreamReader(socket.getInputStream());
+            BufferedReader BR = new BufferedReader(IR);
             ServerController.initialiseServerListener();
-            ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
-            Matrix matrix = (Matrix)inFromServer.readObject();
-            //ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-            //System.out.println("server sagt "+BR.readLine());
-            //Object igotthis = objectInputStream.readObject();
-            //System.out.println(msgFromServer);
+            System.out.println("server sagt "+BR.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
