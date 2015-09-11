@@ -10,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.*;
 import java.util.*;
@@ -25,12 +26,13 @@ import com.google.gson.Gson;
  */
 public class ServerController {
     private static ServerSocket serverSocket;
-    private static Matrix[] matrix;
+    private static Matrix[]     matrix;
 
     public static Boolean toogleServer(Config configDTO) {
         if (isSocketAlive()) {
             return closeSocket();
-        } else {
+        }
+        else {
             return startServer(configDTO);
         }
     }
@@ -66,64 +68,42 @@ public class ServerController {
     }
 
 
-    private static Matrix getMatrixFromJsonByID(int id) {
-        Matrix result = new Matrix();
+    private static int getMatrixFromJsonByID(int id) {
         JSONParser parser = new JSONParser();
         Object obj = null;
+        int binarytmethicCode=0;
         try {
             obj = parser.parse(new FileReader("src/data/matrix" + id + ".json"));
-            JSONObject jsonObject =  (JSONObject) obj;
+            JSONObject jsonObject = (JSONObject) obj;
             Map val = (Map) jsonObject.get("value");
-            result.setValue((HashMap) val);
-            int asd = getBinaryCodeFromMatrix(result);
+            binarytmethicCode = getBinaryCodeFromMatrix(val);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-//        Gson gson = new Gson();
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader("src/data/matrix"+id+".json"));
-//            String jsonText = (String)gson.fromJson(br.toString(), String.class);
-//            Map val = (Map) gson.fromJson("value", Map.class);
-//            result.setValue((HashMap) val);
-//            System.out.println("ja");
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-
-        return result;
+        return binarytmethicCode;
 
     }
 
-    private static int getBinaryCodeFromMatrix(Matrix matrix){
-        HashMap value = matrix.getValue();
-        Set<Map.Entry<String, String>> entrySet = value.entrySet();
+    private static int getBinaryCodeFromMatrix(Map value) {
+        int result = 0;
+        Set<Map.Entry<Integer, List>> entrySet = value.entrySet();
         for (Map.Entry entry : entrySet) {
-           System.out.println("key: " + entry.getKey() + " value: " + entry.getValue());
-
+            int key = Integer.parseInt(entry.getKey().toString());
+            JSONArray list = (JSONArray) entry.getValue();
+            for (int index = 0; index < list.size(); index++) {
+                result += getBinaryValue(key, Integer.parseInt(list.get(index).toString()));
+            }
         }
-
-
-    return 123;
-    }
-
-
-
-
-    protected static Matrix getMatrixFromJsonObject(JSONObject jsonObject) {
-        Matrix result = new Matrix();
-
         return result;
-
-
     }
 
-
-
-
+    private static int getBinaryValue(int key, int value) {
+        int result= (int) Math.pow(2, ((5 * (key-1)) + value - 1));
+        System.out.println("reihe "+key+" wert "+value+" macht "+result);
+        return result;
+    }
 
 
     public static void initialiseServerListener() {
@@ -133,11 +113,9 @@ public class ServerController {
             BufferedReader BR = new BufferedReader(IR);
             String id = BR.readLine();
             System.out.println(id);
-            Matrix answer =  getMatrixFromJsonByID(Integer.parseInt(id));
-//            ObjectOutputStream outToClient = new ObjectOutputStream(listener.getOutputStream());
-//            outToClient.writeObject("siehe oben");
+            int answer = getMatrixFromJsonByID(Integer.parseInt(id));
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.println("siehe oben");
+            printwriter.println("ze Codd"+answer);
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {
