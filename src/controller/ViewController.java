@@ -1,4 +1,4 @@
-package sample;
+package controller;
 
 import controller.ClientController;
 import controller.ServerController;
@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import org.json.simple.parser.ParseException;
 
-public class Controller {
+public class ViewController {
 
     @FXML
     private ToggleGroup matrixGroup;
