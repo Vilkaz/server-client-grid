@@ -1,21 +1,15 @@
 package controller;
 
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import dto.Config;
-import dto.Matrix;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.net.*;
 import java.util.*;
 
-import com.google.gson.Gson;
 //import com.google.gson.reflect.TypeToken<T>;
 
 /**
@@ -26,7 +20,6 @@ import com.google.gson.Gson;
  */
 public class ServerController {
     private static ServerSocket serverSocket;
-    private static Matrix[]     matrix;
 
     public static Boolean toogleServer(Config configDTO) {
         if (isSocketAlive()) {
@@ -100,9 +93,7 @@ public class ServerController {
     }
 
     private static int getBinaryValue(int key, int value) {
-        int result= (int) Math.pow(2, ((5 * (key-1)) + value - 1));
-        System.out.println("reihe "+key+" wert "+value+" macht "+result);
-        return result;
+        return  (int) Math.pow(2, ((5 * (key-1)) + value - 1));
     }
 
 
@@ -112,10 +103,9 @@ public class ServerController {
             InputStreamReader IR = new InputStreamReader(listener.getInputStream());
             BufferedReader BR = new BufferedReader(IR);
             String id = BR.readLine();
-            System.out.println(id);
             int answer = getMatrixFromJsonByID(Integer.parseInt(id));
             PrintWriter printwriter = new PrintWriter(listener.getOutputStream(), true);
-            printwriter.println("ze Codd"+answer);
+            printwriter.println(answer);
         } catch (SocketTimeoutException s) {
             System.out.println("Socket timed out!");
         } catch (IOException e) {

@@ -1,9 +1,9 @@
 package controller;
 
 import dto.Config;
-import dto.Matrix;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.text.View;
 import java.io.*;
 import java.net.Socket;
 
@@ -16,8 +16,9 @@ import java.net.Socket;
 public class ClientController {
     private static Socket socket;
 
-    public static void makeSocket(Config config, int matrixID) throws ClassNotFoundException, ParseException {
+    public static int getBinCode(Config config, int matrixID)  {
         initSocket(config);
+        String binCode="";
         try {
             OutputStream OS = socket.getOutputStream();
             PrintStream PS = new PrintStream(OS);
@@ -25,11 +26,11 @@ public class ClientController {
             InputStreamReader IR = new InputStreamReader(socket.getInputStream());
             BufferedReader BR = new BufferedReader(IR);
             ServerController.initialiseServerListener();
-            System.out.println("server sagt "+BR.readLine());
+            binCode = BR.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return Integer.parseInt(binCode);
     }
 
     private static void initSocket(Config config) {

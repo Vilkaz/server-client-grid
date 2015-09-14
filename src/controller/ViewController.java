@@ -1,12 +1,15 @@
 package controller;
 
-import controller.ClientController;
-import controller.ServerController;
 import dto.Config;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ViewController {
 
@@ -17,7 +20,7 @@ public class ViewController {
     private RadioButton matrix1, matrix2, matrix3, matrix4, matrix5;
 
     @FXML
-    private TableView tableView;
+    private GridPane matrixMainField;
 
     @FXML
     private TextField serverIP_tf, port_tf;
@@ -36,8 +39,7 @@ public class ViewController {
             setToogleServerButton("Server stoppen");
             disableMatrix(false);
             deselectRadiobutton();
-        }
-        else {
+        } else {
             setServerstatus("OFF");
             disableServerEdit(false);
             setToogleServerButton("Server starten");
@@ -46,31 +48,30 @@ public class ViewController {
     }
 
 
+    @FXML
+    private void displayChosenMatrix() throws ClassNotFoundException, ParseException {
+        RadioButton chk = (RadioButton) matrixGroup.getSelectedToggle();
+        int matrixID = Integer.parseInt(chk.getId());
+        int binCode = ClientController.getBinCode(getServerConfig(), matrixID);
+        markMatrixByBinCode(binCode);
+    }
+
     private void disableMatrix(Boolean status) {
         matrix1.setDisable(status);
         matrix2.setDisable(status);
         matrix3.setDisable(status);
         matrix4.setDisable(status);
         matrix5.setDisable(status);
-        tableView.setDisable(status);
     }
 
 
-    private void deselectRadiobutton(){
-        if (matrixGroup.getSelectedToggle()!=null){
+    private void deselectRadiobutton() {
+        if (matrixGroup.getSelectedToggle() != null) {
             matrixGroup.getSelectedToggle().setSelected(false);
         }
     }
 
-    @FXML
-    private void getMatrix() throws ClassNotFoundException, ParseException {
-        RadioButton chk = (RadioButton) matrixGroup.getSelectedToggle();
-         System.out.println("hole matrix nr:"+chk.getId());
-        int matrixID = Integer.parseInt(chk.getId());
-        ClientController.makeSocket(getServerConfig(),matrixID );
-    }
-
-      private void disableServerEdit(Boolean status) {
+    private void disableServerEdit(Boolean status) {
         serverIP_tf.setDisable(status);
         port_tf.setDisable(status);
     }
@@ -79,7 +80,6 @@ public class ViewController {
     private void setToogleServerButton(String status) {
         toogleServer_btn.setText(status);
     }
-
 
 
     private void setServerstatus(String status) {
@@ -92,4 +92,26 @@ public class ViewController {
                 serverIP_tf.getText(),
                 Integer.parseInt(port_tf.getText()));
     }
+
+
+    private void markMatrixByBinCode(int binCode) {
+        for (int row = 4; row >= 0; row--) {
+            for (int col = 4; col >=0 ; col--) {
+                int helper = (int) Math.pow(2,((row*5)+col));
+                Button btn = new Button();//auslagern ... es ist furchbar so ! ist aber spät ... müde ..
+                btn.setMinWidth(70);
+                btn.setMinHeight(60);
+                if (helper<=binCode){
+                   btn.setText("X");
+                   binCode-=helper;
+               } else{
+                   btn.setText("-");
+               }
+                matrixMainField.setConstraints(btn, col, row);
+                matrixMainField.getChildren().add(btn);
+            }
+        }
+    }
+
+
 }
